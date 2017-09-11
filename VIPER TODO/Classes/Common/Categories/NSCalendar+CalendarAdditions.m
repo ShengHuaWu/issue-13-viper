@@ -28,7 +28,7 @@
 
 + (NSCalendar *)gregorianCalendar
 {
-	return [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	return [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 }
 
 
@@ -70,7 +70,7 @@
 
 - (NSDate *)dateForBeginningOfDay:(NSDate *)date
 {
-    NSDateComponents *components = [self components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+    NSDateComponents *components = [self components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
     
     return [self dateFromComponents:components];
 }
@@ -89,8 +89,8 @@
 
 - (NSInteger)daysRemainingInWeekWithDate:(NSDate *)date
 {
-	NSDateComponents *weekdayComponent = [self components:NSWeekdayCalendarUnit fromDate:date];
-    NSRange daysRange = [self rangeOfUnit:NSWeekdayCalendarUnit inUnit:NSWeekCalendarUnit forDate:date];
+	NSDateComponents *weekdayComponent = [self components:NSCalendarUnitWeekday fromDate:date];
+    NSRange daysRange = [self rangeOfUnit:NSCalendarUnitWeekday inUnit:NSCalendarUnitWeekOfMonth forDate:date];
 	NSInteger daysPerWeek = daysRange.length;
     
 	return daysPerWeek - [weekdayComponent weekday];
@@ -102,7 +102,7 @@
     NSDate *endOfWeek = [self dateForEndOfWeekWithDate:date];
     
 	NSDateComponents *nextWeekComponent = [[NSDateComponents alloc] init];
-	[nextWeekComponent setWeek:1];
+	[nextWeekComponent setWeekOfMonth:1];
 	
 	return [self dateByAddingComponents:nextWeekComponent toDate:endOfWeek options:0];
 }
@@ -122,10 +122,10 @@
 
 - (BOOL)isDate:(NSDate *)date1 duringSameWeekAsDate:(NSDate *)date2
 {
-    NSDateComponents *components1 = [self components:NSWeekCalendarUnit fromDate:date1];
-    NSDateComponents *components2 = [self components:NSWeekCalendarUnit fromDate:date2];
+    NSDateComponents *components1 = [self components:NSCalendarUnitWeekOfMonth fromDate:date1];
+    NSDateComponents *components2 = [self components:NSCalendarUnitWeekOfMonth fromDate:date2];
     
-    return ([components1 week] == [components2 week]);
+    return ([components1 weekOfMonth] == [components2 weekOfMonth]);
 }
 
 
@@ -133,10 +133,10 @@
 {
     NSDate *nextWeek = [self dateForEndOfFollowingWeekWithDate:date2];
     
-    NSDateComponents *components1 = [self components:NSWeekCalendarUnit fromDate:date1];
-    NSDateComponents *nextWeekComponents = [self components:NSWeekCalendarUnit fromDate:nextWeek];
+    NSDateComponents *components1 = [self components:NSCalendarUnitWeekOfMonth fromDate:date1];
+    NSDateComponents *nextWeekComponents = [self components:NSCalendarUnitWeekOfMonth fromDate:nextWeek];
     
-    return ([components1 week] == [nextWeekComponents week]);
+    return ([components1 weekOfMonth] == [nextWeekComponents weekOfMonth]);
 }
 
 
@@ -174,7 +174,7 @@
 
 - (NSDateComponents *)yearMonthDayCompomentsFromDate:(NSDate *)date
 {
-    return [self components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+    return [self components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
 }
 
 
