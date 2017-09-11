@@ -42,7 +42,6 @@ static NSString *AddViewControllerIdentifier = @"VTDAddViewController";
 {
     VTDAddViewController *addViewController = [self addViewController];
     addViewController.eventHandler = self.addPresenter;
-    addViewController.modalPresentationStyle = UIModalPresentationCustom;
     addViewController.transitioningDelegate = self;
 
     [self.addPresenter configureUserInterfaceForPresentation:addViewController];
